@@ -1,0 +1,25 @@
+/* Enter your custom styles here */
+
+.imageStyle {
+    size: 10000px;
+   
+   
+}
+#toolPageHeader {
+    background-color: #00796b; 
+   
+}
+.customToolHeader {
+    background-color: rgba(173, 216, 230, 1) !important;
+}
+.customAlternateRowColors .sapMLIB:nth-child(odd) {
+    background-color: #ffffff; 
+}
+
+.customAlternateRowColors .sapMLIB:nth-child(even) {
+    background-color: #dfefff;
+}
+.customAlternateRowColors .sapMListTblHeaderRow {
+    background-color: #d1e8ff !important; 
+}
+

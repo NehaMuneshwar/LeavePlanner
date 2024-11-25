@@ -1,0 +1,64 @@
+<mvc:View controllerName="com.ibs.leave.leaveteamplanner.controller.LeaveStatus"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Page title="Leave History">
+        <VBox>
+            <!-- Filters -->
+            <HBox alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMargin">
+                <VBox>
+                    <Label text="Year" />
+                    <Select width="100px" selectedKey="2024">
+                        <items>
+                            <core:Item key="2024" text="2024" />
+                        </items>
+                    </Select>
+                </VBox>
+            </HBox>
+
+            <!-- Responsive Table -->
+            <Table
+                items="{HolidayCalendarModel>/}"
+                class="customAlternateRowColors"
+                inset="false"
+                width="100%">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Holiday Calendar" />
+                    </Toolbar>
+                </headerToolbar>
+                <columns >
+                    <Column>
+                        <Text text="Sr. No."/>
+                    </Column>
+                    <Column>
+                        <Text text="Date"/>
+                    </Column>
+                    <Column>
+                        <Text text="Day"/>
+                    </Column>
+                    <Column>
+                        <Text text="Holiday Description" />
+                    </Column>
+                  
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{HolidayCalendarModel>SR_NO}"/>
+                            <Text text="{HolidayCalendarModel>DATE}" />
+                            <Text text="{HolidayCalendarModel>DAY}" />
+                            <Text text="{HolidayCalendarModel>HOLIDAY_DESC}" />
+                            
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+            <!-- Summary -->
+            <HBox class="sapUiSmallMargin" alignItems="Center" justifyContent="End">
+                <Button text="Back"></Button>
+            </HBox>
+        </VBox>
+    </Page>
+</mvc:View>

@@ -1,0 +1,89 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog id="holidayCalendarDialog1" title=""  contentWidth="70%"   
+          contentHeight="100%">
+   
+                          <Table id="idProductsTable1"
+								inset="false"
+								sticky="HeaderToolbar,ColumnHeaders"
+								items="{
+										path: 'LeaveInfoModel>/'
+										
+									}"
+								>
+								<headerToolbar>
+									<Toolbar>
+										<Label text="Leave Status"></Label>
+									</Toolbar>
+								</headerToolbar>
+								<columns>
+									<Column>
+										<Text text="Leave Id"/>
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true">
+										<Text text="Employee Id" />
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+										<Text text="Leave Type" />
+									</Column>
+                                     <Column hAlign="End">
+										<Text text="No of Leaves" />
+									</Column>
+									<Column hAlign="End">
+                                    <Text text="Start Date"/>
+								 </Column>
+                                    <Column hAlign="End">
+									<Text text="End Date"/>
+									</Column>
+                                     <Column hAlign="End">
+										<Text text="Leave Notes" />
+									</Column>
+                                    
+                                    <Column hAlign="End">
+										<Text text="Status" />
+									</Column>
+                                      <Column hAlign="End" visible="false">
+										<Text text="Status" />
+									</Column>
+                                    
+								</columns>
+								<items>
+									<ColumnListItem>
+										<cells>
+											<Text text="{LeaveInfoModel>LEAVE_ID}"/>
+											<Text text="{LeaveInfoModel>EMPLOYEE_ID}"/>
+											<Text text="{LeaveInfoModel>LEAVE_TYPE}"/>
+											<Text text="{LeaveInfoModel>NO_OF_LEAVES}"/>
+                                           <Text text="{
+                                           path: 'LeaveInfoModel>START_DATE',
+                                           type: 'sap.ui.model.type.Date',
+					                      formatOptions :{
+						                   source:{
+							                     pattern:'yyyy-MM-ddTHH:mm:ss:AAAZ'
+						                          },
+						                   pattern :'yyyy-MM-dd'
+					                   }
+				                       }"/>
+                                           <Text text="{
+					                       path:'LeaveInfoModel>END_DATE',
+					                       type: 'sap.ui.model.type.Date',
+					                         formatOptions :{
+					                       	source:{
+							                 pattern:'yyyy-MM-ddTHH:mm:ss:AAAZ'
+						                },
+						               pattern :'yyyy-MM-dd'
+					                   }
+				                }"/>
+                                <Text text="{LeaveInfoModel>LEAVE_NOTES}"/>
+                                 <ObjectStatus text="{LeaveInfoModel>TO_STATUS_LEAD/DESCRIPTION}" state="{path: 'LeaveInfoModel>TO_STATUS_LEAD/DESCRIPTION', formatter: '.formatter.RequestStatus'}" inverted="true" press="SortStatus"/> 
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+							<Toolbar>
+            <ToolbarSpacer />
+            <Button text="Close" press="onLeaveClose"/>
+        </Toolbar>   
+</Dialog>
+</core:FragmentDefinition>

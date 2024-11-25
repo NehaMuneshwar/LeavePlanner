@@ -1,0 +1,9 @@
+/* Enter your custom styles here */
+.customHeaderBackground {
+    background-color: blue; /* Set your desired color */
+    
+}
+.flexBoxContainer {
+    overflow-x: auto; /* Enables horizontal scrolling if items exceed container width */
+    white-space: nowrap; /* Prevents items from wrapping */
+}

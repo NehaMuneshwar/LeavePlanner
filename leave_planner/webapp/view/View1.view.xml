@@ -1,0 +1,246 @@
+<mvc:View controllerName="com.leaveplanner.leaveplanner.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" 	xmlns:form="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout" xmlns:l="sap.ui.layout" class="GridPropertiesSample" xmlns:tnt="sap.tnt"
+    height="100%">
+    <tnt:ToolPage id="toolPage">
+        <tnt:header >
+            <tnt:ToolHeader class="customHeaderBackground">
+                <Image height="1.5rem"
+                       class="sapUiSmallMarginBegin"
+                       src="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" />
+                <Title level="H3" text="Leave Request" wrapping="false" id="productName">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="Disappear"/>
+                    </layoutData>
+                </Title>
+                <Text text="" wrapping="false" id="secondTitle">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="Disappear"/>
+                    </layoutData>
+                </Text>
+                <ToolbarSpacer />
+                <!-- <SearchField width="16rem" id="searchField">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="Low" group="1"/>
+                    </layoutData>
+                </SearchField> -->
+				<OverflowToolbar>
+							<GenericTag text="CL:"
+								status="Success"
+								press="onPressOpenPopover"
+								design="StatusIconHidden">
+								<ObjectNumber number="10 Days"
+									unit=""
+									emphasized="false"
+									state="Success" class="genericTag"/>
+							</GenericTag>
+							<GenericTag text="GL:"
+								status="Success"
+								press="onPressOpenPopover"
+								design="StatusIconHidden">
+								<ObjectNumber number="12 Days"
+									unit=""
+									emphasized="false"
+									state="Success" class="genericTag"/>
+							</GenericTag>
+						</OverflowToolbar>
+                <ToolbarSpacer id="spacer">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="Low" group="1"/>
+                    </layoutData>
+                </ToolbarSpacer>
+                <Button visible="false" icon="sap-icon://search" type="Transparent" id="searchButton" tooltip="Search"/>
+                <OverflowToolbarButton icon="sap-icon://source-code" type="Transparent" tooltip="Action 1" text="Action 1">
+                    <layoutData>
+                        <OverflowToolbarLayoutData group="2"/>
+                    </layoutData>
+                </OverflowToolbarButton>
+                <OverflowToolbarButton icon="sap-icon://card" type="Transparent" tooltip="Action 2" text="Action 2">
+                    <layoutData>
+                        <OverflowToolbarLayoutData group="2"/>
+                    </layoutData>
+                </OverflowToolbarButton>
+                <ToolbarSeparator>
+                    <layoutData>
+                        <OverflowToolbarLayoutData group="2"/>
+                    </layoutData>
+                </ToolbarSeparator>
+                <OverflowToolbarButton icon="sap-icon://action-settings" type="Transparent" text="Settings"/>
+                <Button icon="sap-icon://bell" type="Transparent" tooltip="Notification">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                    </layoutData>
+                </Button>
+                <tnt:ToolHeaderUtilitySeparator/>
+                <ToolbarSpacer width="1.125rem"/>
+                <Avatar src="test-resources/sap/tnt/images/Woman_avatar_01.png" displaySize="XS" tooltip="Profile">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                    </layoutData>
+                </Avatar>
+               <Button text="Apply Leave"  type="Emphasized" press="onCreatePress" tooltip="Create New Request">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                    </layoutData>
+                </Button>
+            </tnt:ToolHeader>
+        </tnt:header>
+        <tnt:subHeader>
+            <tnt:ToolHeader>
+                <IconTabHeader
+                        selectedKey="{/selectedKey}"
+                        items="{path: '/navigation'}"
+                        select=".onItemSelect"
+                        mode="Inline">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow" shrinkable="true" />
+                    </layoutData>
+                    <items>
+                        <IconTabFilter
+                                items="{items}"
+                                text="{title}"
+                                key="{key}"
+                                interactionMode="SelectLeavesOnly">
+                            <items>
+                                <IconTabFilter
+                                        text="{title}"
+                                        key="{key}">
+                                </IconTabFilter>
+                            </items>
+                        </IconTabFilter>
+                    </items>
+                </IconTabHeader>
+            </tnt:ToolHeader>
+        </tnt:subHeader>
+        <tnt:mainContents>
+            <NavContainer id="pageContainer" initialPage="page1">
+                <pages>
+                    <layout:Grid defaultSpan="L6 M2 S4" hSpacing="1" vSpacing="1">
+                <layout:content>
+                     <Panel headerText="General Information" width="100%">
+            <VBox class="sapUiSmallMargin">
+                <form:SimpleForm id="GeneralInformationForm"
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    title=""
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="3"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="4"
+                    emptySpanL="4"
+                    emptySpanM="4"
+                    emptySpanS="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1"
+                    singleContainerFullSize="false">
+                    <form:content>
+                        <Label text="Department" design="Bold"/>
+                        <Text id="departmentText" text="{Department}" />
+                        <Label text="Joining Date" design="Bold"/>
+                        <Text id="joiningDate" text="{JoiningDate}" />
+                        <Label text="Location" design="Bold"/>
+                        <Text id="locationText" text="{Location}" />
+                    </form:content>
+                </form:SimpleForm>
+            </VBox>
+        </Panel>
+
+                    <Panel headerText="Profile Details" width="400%">
+                        <VBox class="sapUiSmallMargin">
+		<form:SimpleForm id="SimpleFormDisplay354"
+			editable="false"
+			layout="ResponsiveGridLayout"
+			title=""
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<form:content>
+				<Label text="Emp Code" design="Bold"/>
+				<Text id="nameText" text="{SupplierName}" />
+				<Label text="Employee Name"  design="Bold"/>
+				<Text text="{Street} {HouseNumber}" />
+				<Label text="Project Allocated"  design="Bold"/>
+				<Text text="{ZIPCode} {City}" />
+				<Label text="Designation"  design="Bold"/>
+				<Text id="designation" text="{Country}" />
+				<Label text="Reporting Manager"  design="Bold"/>
+				<Text id="reportingmanager" text="{Country}" />
+				<Label text="Reporting Lead"  design="Bold"/>
+				<Text id="lead" text="{Country}" />
+				
+</form:content>
+		</form:SimpleForm>
+	</VBox>
+                    </Panel>
+                    <!-- Add more Panels or other content here as needed -->
+                </layout:content>
+            </layout:Grid>
+                    <ScrollContainer
+                        id="page2"
+                        horizontal="false"
+                        vertical="true"
+                        height="100%"
+                        class="sapUiContentPadding">
+                        <Text text="Applications" />
+                    </ScrollContainer>
+                    <ScrollContainer
+                        id="page3"
+                        horizontal="false"
+                        vertical="true"
+                        height="100%"
+                        class="sapUiContentPadding">
+                        <Text text="Users and Groups" />
+                    </ScrollContainer>
+                    <ScrollContainer
+                        id="page4"
+                        horizontal="false"
+                        vertical="true"
+                        height="100%"
+                        class="sapUiContentPadding">
+                        <Text text="Identity" />
+                    </ScrollContainer>
+                    <ScrollContainer
+                            id="page5"
+                            horizontal="false"
+                            vertical="true"
+                            height="100%"
+                            class="sapUiContentPadding">
+                        <Text text="Provisioning" />
+                    </ScrollContainer>
+                    <ScrollContainer
+                            id="page6"
+                            horizontal="false"
+                            vertical="true"
+                            height="100%"
+                            class="sapUiContentPadding">
+                        <Text text="Monitoring" />
+                    </ScrollContainer>
+                    <ScrollContainer
+                            id="page7"
+                            horizontal="false"
+                            vertical="true"
+                            height="100%"
+                            class="sapUiContentPadding">
+                        <Text text="Resources" />
+                    </ScrollContainer>
+                </pages>
+            </NavContainer>
+        </tnt:mainContents>
+    </tnt:ToolPage>
+	
+ 
+</mvc:View>

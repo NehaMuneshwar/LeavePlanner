@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="teamLeavePlannerService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="TEAM_LEAVE_INFO" EntityType="teamLeavePlannerService.TEAM_LEAVE_INFO">
+                    <NavigationPropertyBinding Path="TO_EMPLOYEE" Target="MASTER_EMPLOYEE"/>
+                    <NavigationPropertyBinding Path="TO_STATUS_LEAD" Target="MASTER_STATUS"/>
+                    <NavigationPropertyBinding Path="TO_STATUS_MANAGER" Target="MASTER_STATUS"/>
+                    <NavigationPropertyBinding Path="TO_LEAVE_TYPE" Target="MASTER_LEAVE_TYPE"/>
+                </EntitySet>
+                <EntitySet Name="MASTER_EMPLOYEE" EntityType="teamLeavePlannerService.MASTER_EMPLOYEE">
+                    <NavigationPropertyBinding Path="TO_PROJECT" Target="MASTER_PROJECT"/>
+                </EntitySet>
+                <EntitySet Name="MASTER_STATUS" EntityType="teamLeavePlannerService.MASTER_STATUS"/>
+                <EntitySet Name="MASTER_PROJECT" EntityType="teamLeavePlannerService.MASTER_PROJECT"/>
+                <EntitySet Name="MASTER_LEAVE_TYPE" EntityType="teamLeavePlannerService.MASTER_LEAVE_TYPE"/>
+            </EntityContainer>
+            <EntityType Name="TEAM_LEAVE_INFO">
+                <Key>
+                    <PropertyRef Name="EMPLOYEE_ID"/>
+                </Key>
+                <Property Name="EMPLOYEE_ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="LEAVE_TYPE" Type="Edm.String" MaxLength="15"/>
+                <Property Name="NO_OF_LEAVES" Type="Edm.Int32"/>
+                <Property Name="START_DATE" Type="Edm.DateTimeOffset"/>
+                <Property Name="END_DATE" Type="Edm.DateTimeOffset"/>
+                <Property Name="LEAVE_LEAD_STATUS" Type="Edm.Int32"/>
+                <Property Name="LEAVE_MANAGER_STATUS" Type="Edm.Int32"/>
+                <Property Name="LEAVE_NOTES" Type="Edm.String" MaxLength="100"/>
+                <NavigationProperty Name="TO_EMPLOYEE" Type="teamLeavePlannerService.MASTER_EMPLOYEE">
+                    <ReferentialConstraint Property="EMPLOYEE_ID" ReferencedProperty="EMPLOYEE_ID"/>
+                </NavigationProperty>
+                <NavigationProperty Name="TO_STATUS_LEAD" Type="teamLeavePlannerService.MASTER_STATUS">
+                    <ReferentialConstraint Property="LEAVE_LEAD_STATUS" ReferencedProperty="CODE"/>
+                </NavigationProperty>
+                <NavigationProperty Name="TO_STATUS_MANAGER" Type="teamLeavePlannerService.MASTER_STATUS">
+                    <ReferentialConstraint Property="LEAVE_MANAGER_STATUS" ReferencedProperty="CODE"/>
+                </NavigationProperty>
+                <NavigationProperty Name="TO_LEAVE_TYPE" Type="teamLeavePlannerService.MASTER_LEAVE_TYPE">
+                    <ReferentialConstraint Property="LEAVE_TYPE" ReferencedProperty="CODE"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="MASTER_EMPLOYEE">
+                <Key>
+                    <PropertyRef Name="EMPLOYEE_ID"/>
+                    <PropertyRef Name="PROJECT"/>
+                </Key>
+                <Property Name="EMPLOYEE_ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="PROJECT" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="EMPLOYEE_NAME" Type="Edm.String" MaxLength="100"/>
+                <Property Name="DESIGNATION" Type="Edm.String" MaxLength="30"/>
+                <Property Name="REPORTING_MANAGER" Type="Edm.String" MaxLength="30"/>
+                <Property Name="REPORTING_LEAD" Type="Edm.String" MaxLength="30"/>
+                <Property Name="GENERAL_LEAVE_BALANCE" Type="Edm.Int32"/>
+                <Property Name="CASUAL_LEAVE_BALANCE" Type="Edm.Int32"/>
+                <NavigationProperty Name="TO_PROJECT" Type="Collection(teamLeavePlannerService.MASTER_PROJECT)"/>
+            </EntityType>
+            <EntityType Name="MASTER_STATUS">
+                <Key>
+                    <PropertyRef Name="CODE"/>
+                </Key>
+                <Property Name="CODE" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="DESCRIPTION" Type="Edm.String" MaxLength="30"/>
+            </EntityType>
+            <EntityType Name="MASTER_PROJECT">
+                <Key>
+                    <PropertyRef Name="CODE"/>
+                </Key>
+                <Property Name="CODE" Type="Edm.String" MaxLength="10" Nullable="false"/>
+                <Property Name="DESCRIPTION" Type="Edm.String" MaxLength="50"/>
+                <Property Name="PROJECT_TYPE" Type="Edm.String" MaxLength="20"/>
+            </EntityType>
+            <EntityType Name="MASTER_LEAVE_TYPE">
+                <Key>
+                    <PropertyRef Name="CODE"/>
+                </Key>
+                <Property Name="CODE" Type="Edm.String" MaxLength="15" Nullable="false"/>
+                <Property Name="DESCRIPTION" Type="Edm.String" MaxLength="30"/>
+            </EntityType>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

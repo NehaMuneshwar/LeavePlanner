@@ -1,0 +1,134 @@
+<mvc:View  xmlns:mvc="sap.ui.core.mvc" controllerName="com.leaveplanner.leaveplanner.controller.View2"
+ xmlns:unified="sap.ui.unified" xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout"
+          xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" >
+
+    <Page id="page" title="Leave Request">
+        <content>
+        <HBox >
+        <HBox width="100%">
+        <l:VerticalLayout class="sapUiContentPadding" width="100%">
+                    <Text text=""/>
+                    <!-- <unified:Calendar id="calendar" width="200%" select="onDateSelect"/> -->
+                  <unified:Calendar xmlns:unified="sap.ui.unified" id="calendar" width="200%" specialDates="{HolidayModel>/specialDates}">
+    <unified:specialDates>
+        <unified:DateTypeRange 
+            startDate="{HolidayModel>startDate}" 
+            type="{HolidayModel>type}" 
+            tooltip="{HolidayModel>tooltip}"/>
+    </unified:specialDates>
+</unified:Calendar>
+
+
+<unified:CalendarLegend xmlns:unified="sap.ui.unified" id="calendarLegend" items="{path: 'CalendorColourModel>/legendItems'}">
+    <unified:items>
+        <unified:CalendarLegendItem 
+            text="{CalendorColourModel>text}" 
+            type="{CalendorColourModel>type}" 
+            color="{CalendorColourModel>color}"
+             class="calendarLegendItem"/> 
+    </unified:items>
+</unified:CalendarLegend>
+
+                </l:VerticalLayout>
+           </HBox>
+                 <HBox width="100%">
+                <Panel headerText="Create Absence" class="sapUiResponsiveMargin" width="90%">
+    <form:SimpleForm class="sapUiSizeCompact" id="SimpleFormCh" editable="true" 
+                     layout="ResponsiveGridLayout" singleContainerFullSize="false">
+        <form:content>
+            
+            <Label text="Leave*" required="true" design="Bold">
+                <layoutData>
+                    <!-- Adjust the span for better alignment -->
+                    <layout:GridData span="XL2 L2 M3 S12"/>
+                </layoutData>
+            </Label>
+            <ComboBox id="leaveTypeComboBox" placeholder="Select Leave Type" items="{/leaveTypes}">
+                <core:Item key="{key}" text="{text}" />
+                <layoutData>
+                    <layout:GridData span="XL4 L6 M9 S12"/>
+                </layoutData>
+            </ComboBox>
+
+            <Label text="Available Balance" design="Bold">
+                <layoutData>
+                    <layout:GridData span="XL2 L2 M3 S12"/>
+                </layoutData>
+            </Label>
+            <Input id="availableBalance" value="{/availableBalance}" editable="false">
+                <layoutData>
+                    <layout:GridData span="XL4 L6 M9 S12"/>
+                </layoutData>
+            </Input>
+
+            <Label text="Start Date*" required="true" design="Bold">
+                <layoutData>
+                    <layout:GridData span="XL2 L2 M3 S12"/>
+                </layoutData>
+            </Label>
+            <DatePicker id="startDatePicker" valueFormat="yyyy-MM-dd" displayFormat="MMM dd, yyyy">
+                <layoutData>
+                    <layout:GridData span="XL4 L6 M9 S12"/>
+                </layoutData>
+            </DatePicker>
+
+            <Label text="End Date" design="Bold">
+                <layoutData>
+                    <layout:GridData span="XL2 L2 M3 S12"/>
+                </layoutData>
+            </Label>
+            <DatePicker id="endDatePicker" valueFormat="yyyy-MM-dd" displayFormat="MMM dd, yyyy">
+                <layoutData>
+                    <layout:GridData span="XL4 L6 M9 S12"/>
+                </layoutData>
+            </DatePicker>
+
+            <Label text="Requesting Days" design="Bold">
+                <layoutData>
+                    <layout:GridData span="XL2 L2 M3 S12"/>
+                </layoutData>
+            </Label>
+            <Input id="requestingDays" value="{/requestingDays}" editable="false">
+                <layoutData>
+                    <layout:GridData span="XL4 L6 M9 S12"/>
+                </layoutData>
+            </Input>
+
+            <Label text="Returning to Work On" design="Bold">
+                <layoutData>
+                    <layout:GridData span="XL2 L2 M3 S12"/>
+                </layoutData>
+            </Label>
+            <DatePicker id="returnToWorkDatePicker" valueFormat="yyyy-MM-dd" displayFormat="MMM dd, yyyy">
+                <layoutData>
+                    <layout:GridData span="XL4 L6 M9 S12"/>
+                </layoutData>
+            </DatePicker>
+
+            <Label text="Remarks" design="Bold">
+                <layoutData>
+                    <layout:GridData span="XL2 L2 M3 S12"/>
+                </layoutData>
+            </Label>
+            <TextArea id="remarksTextArea" value="{/remarks}" placeholder="Enter remarks here" rows="3">
+                <layoutData>
+                    <layout:GridData span="XL8 L10 M12 S12"/>
+                </layoutData>
+            </TextArea>
+
+        </form:content>
+    </form:SimpleForm>
+</Panel>
+
+                 </HBox>
+                 </HBox>
+    </content>
+         <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button text="Submit" type="Emphasized" press="onSubmit" />
+                <Button text="Cancel" type="Transparent" press="onCancel" />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>

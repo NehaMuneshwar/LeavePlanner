@@ -1,0 +1,304 @@
+<mvc:View xmlns:f="sap.f" controllerName="com.ibs.leave.leaveteamplanner.controller.MasterPage"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"   
+    xmlns:uxap="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:unified="sap.ui.unified"
+    xmlns:form="sap.ui.layout.form" 
+    xmlns:suite="sap.suite.ui.commons">
+
+    <l:DynamicSideContent
+        id="DynamicSideContent"
+        class="sapUiDSCExplored sapUiContentPadding"
+        containerQuery="true"
+        sideContentVisibility="NeverShow">
+        
+        <l:sideContent>
+            <Toolbar>
+                <Title text="Leave History"/>
+                <ToolbarSpacer/>
+            </Toolbar>
+            <layout:VerticalLayout width="100%">
+                <suite:Timeline id="idCombinedTimeline" enableScroll="false" showHeaderBar="false" enableDoubleSided="false" sortOldestFirst="true" content="{LeaveEventModel>/}">
+                    <suite:content>
+                        <suite:TimelineItem
+                             title=""
+                             dateTime="{LeaveEventModel>CREATED_ON}"
+                             text="{path: 'LeaveEventModel>TO_STATUS_LEAD/DESCRIPTION',formatter: '.formatter.RequestStatus'}" 
+                             userName="Leave ID:{LeaveEventModel>LEAVE_ID}"
+                            userPicture="sap-icon://person-placeholder">
+                            <VBox>
+                             <Text text="UserID: {LeaveEventModel>TO_EVENT/EMAIL_ID}" />
+                              <Text text="UserName: {LeaveEventModel>TO_EVENT}" />
+                             <Text text="Comment: {LeaveEventModel>COMMENT}" />
+                           <ObjectStatus
+                           text="{path: 'LeaveEventModel>TO_STATUS_LEAD/DESCRIPTION'}"
+                           state="{path: 'TO_STATUS_LEAD/DESCRIPTION', formatter: '.formatter.RequestStatus'}" inverted="true" />
+                          </VBox>
+                        </suite:TimelineItem>
+                    </suite:content>
+                </suite:Timeline>
+            </layout:VerticalLayout>
+        </l:sideContent>
+        
+        <f:DynamicPage showFooter="true">
+            <f:title>
+                <f:DynamicPageTitle>
+                    <f:heading>
+                        <HBox justifyContent="SpaceBetween">
+                            <Title text="Leave Planner" level="H1"/>
+                        </HBox>
+                    </f:heading>
+                    <f:actions>
+                        <Button text="Holiday Calendar" type="Transparent" press="OnHolidayCalendar"/>
+                         <Button text="Leave History" type="Transparent" press="OnLeaveHistory"/>
+                        <Button text="Leave Details" id="showLogButton" press="onShowLog" visible="true"/>
+                        <Button text="Close" id="hideLogButton" press="onHideLog" visible="false"/>
+                    </f:actions>
+                </f:DynamicPageTitle>
+            </f:title>
+
+            <!-- Dynamic Page Header -->
+            <f:header>
+                <f:DynamicPageHeader pinnable="true">
+                    <FlexBox wrap="Wrap" fitContainer="true">
+                        <VBox alignItems="Center" class="sapUiMediumMarginEnd sapUiSmallMarginBottom" width="150px">
+                            <Avatar src="sap-icon://person-placeholder" class="sapUiTinyMarginBottom" displaySize="L" />
+                            <ObjectStatus text="{parts: [{path: 'context>/EmpName'}, {path: 'context>/LastName'}], formatter: '.formatEmpFullName'}" />
+                        </VBox>
+
+                        <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                            <Title class="sapUiTinyMarginBottom">
+                                <Link text="Employee Details" press="onOrderDetailsPress"/>
+                            </Title>
+
+                            <HBox class="sapUiTinyMarginBottom" renderType="Bare">
+                                <Label text="Employee Code:" class="sapUiTinyMarginEnd" design="Bold"/>
+                                <Text text="{MasterEmpModel>/0/EMPLOYEE_ID}"/>
+                            </HBox>
+
+                            <HBox class="sapUiTinyMarginBottom" renderType="Bare">
+                                <Label text="Employee Name:" class="sapUiTinyMarginEnd" design="Bold"/>
+                                <ObjectStatus text="{parts: [{path: 'context>/EmpName'}, {path: 'context>/LastName'}], formatter: '.formatEmpFullName'}" />
+                            </HBox>
+
+                            <HBox class="sapUiTinyMarginBottom" renderType="Bare">
+                                <Label text="Designation:" class="sapUiTinyMarginEnd" design="Bold"/>
+                                <Text text="{MasterEmpModel>/0/DESIGNATION}"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                            <HBox class="sapUiTinyMarginBottom">
+                                <Label text="Project Allocated:" class="sapUiTinyMarginEnd" design="Bold" />
+                                <Link text="{MasterEmpModel>/0/TO_PROJECT/0/DESCRIPTION}" press="handleTitleSelectorPress"/>
+                            </HBox>
+
+                            <HBox class="sapUiTinyMarginBottom">
+                                <core:Icon src="sap-icon://outgoing-call"/>
+                                <Link text="{MasterEmpModel>/0/MOBILE_NO}" press="onExternalApplicationLinkPress" class="sapUiSmallMarginBegin"/>
+                            </HBox>
+
+                            <HBox renderType="Bare">
+                                <core:Icon src="sap-icon://email"/>
+                                <Link text="{context>/EmailID}" class="sapUiSmallMarginBegin"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                            <Title class="sapUiTinyMarginBottom">
+                                <Link text="Status" press="onAnotherPageLinkPress"/>
+                            </Title>
+                            <ObjectStatus text="Pending" state="Success" class="sapMObjectStatusLarge"/>
+                        </VBox>
+                    </FlexBox>
+                </f:DynamicPageHeader>
+            </f:header>
+
+            <!-- Dynamic Page Content -->
+            <f:content>
+                <l:VerticalLayout id="containerLayout" width="100%">
+                    <l:BlockLayout id="BlockLayout" background="Dashboard">
+                        <l:BlockLayoutRow accentCells="Accent1">
+                            <!-- Calendar Block -->
+                            <l:BlockLayoutCell>
+                                <unified:Calendar id="calendar" width="110%" specialDates="{HolidayModel>/specialDates}">
+                                    <unified:specialDates>
+                                        <unified:DateTypeRange startDate="{HolidayModel>startDate}"
+                                            type="{HolidayModel>type}" tooltip="{HolidayModel>tooltip}" />
+                                    </unified:specialDates>
+                                </unified:Calendar>
+
+                                <unified:CalendarLegend id="calendarLegend"
+                                    items="{path: 'CalendorColourModel>/legendItems'}">
+                                    <unified:items>
+                                        <unified:CalendarLegendItem text="{CalendorColourModel>text}"
+                                            type="{CalendorColourModel>type}" color="{CalendorColourModel>color}"
+                                            class="calendarLegendItem" />
+                                    </unified:items>
+                                </unified:CalendarLegend>
+                            </l:BlockLayoutCell>
+                          <l:BlockLayoutCell visible="false">
+                                 	<Table id="idProductsTable"
+								inset="false"
+								sticky="HeaderToolbar,ColumnHeaders"
+								items="{
+										path: 'LeaveInfoModel>/'
+										
+									}"
+								class="sapUiSmallNegativeMarginBeginEnd"
+								width="auto">
+								<headerToolbar>
+									<Toolbar>
+										<Label text="Leave Status"></Label>
+									</Toolbar>
+								</headerToolbar>
+								<columns>
+									<Column>
+										<Text text="Leave Id"/>
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true">
+										<Text text="Employee Id" />
+									</Column>
+									<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+										<Text text="Leave Type" />
+									</Column>
+                                     <Column hAlign="End">
+										<Text text="No of Leaves" />
+									</Column>
+									<Column hAlign="End">
+                                    <Text text="Start Date"/>
+								 </Column>
+                                    <Column hAlign="End">
+									<Text text="End Date"/>
+									</Column>
+                                     <Column hAlign="End">
+										<Text text="Leave Notes" />
+									</Column>
+                                    
+                                    <Column hAlign="End">
+										<Text text="Status" />
+									</Column>
+                                    
+								</columns>
+								<items>
+									<ColumnListItem>
+										<cells>
+											<Text text="{LeaveInfoModel>LEAVE_ID}"/>
+											<Text text="{LeaveInfoModel>EMPLOYEE_ID}"/>
+											<Text text="{LeaveInfoModel>LEAVE_TYPE}"/>
+											<Text text="{LeaveInfoModel>NO_OF_LEAVES}"/>
+                                           <Text text="{
+                                           path: 'LeaveInfoModel>START_DATE',
+                                           type: 'sap.ui.model.type.Date',
+					                      formatOptions :{
+						                   source:{
+							                     pattern:'yyyy-MM-ddTHH:mm:ss:AAAZ'
+						                          },
+						                   pattern :'yyyy-MM-dd'
+					                   }
+				                       }"/>
+                                           <Text text="{
+					                       path:'LeaveInfoModel>END_DATE',
+					                       type: 'sap.ui.model.type.Date',
+					                         formatOptions :{
+					                       	source:{
+							                 pattern:'yyyy-MM-ddTHH:mm:ss:AAAZ'
+						                },
+						               pattern :'yyyy-MM-dd'
+					                   }
+				                }"/>
+                                <Text text="{LeaveInfoModel>LEAVE_NOTES}"/>
+                                 <ObjectStatus text="{LeaveInfoModel>TO_STATUS_LEAD/DESCRIPTION}"
+                                            state="{path: 'TO_STATUS_LEAD/DESCRIPTION',
+					                    formatter: '.formatter.RequestStatus'}" inverted="true" press="SortStatus"/> 
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+                            </l:BlockLayoutCell> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <!-- Form Block -->
+                            <l:BlockLayoutCell visible="true" id="SimpleformBlock">
+                                  <form:SimpleForm class="sapUiSizeCompact" id="SimpleFormCh" editable="true"
+                                layout="ResponsiveGridLayout" singleContainerFullSize="false" title="Create Absence" >
+                                <form:content>
+                                    <Label text="Leave*" required="true" design="Bold"/>
+                                    <ComboBox id="leaveType" placeholder="Select Leave Type"
+                                        items="{LeaveTypeModel>/}" change="OnLeaveBalance">
+                                        <core:Item key="{LeaveTypeModel>CODE}" text="{LeaveTypeModel>DESCRIPTION}" />
+                                    </ComboBox>
+
+                                     <FlexBox justifyContent="SpaceBetween">
+                                   <VBox>
+                                      <Label text="Casual Leave" design="Bold" />
+                                    <Input id="casualLeaveBalance" value="{MasterEmpModel>/0/CASUAL_LEAVE_BALANCE}" editable="false"/>
+                                     </VBox>
+
+                                         <VBox>
+                                        <Label text="General Leave" design="Bold" />
+                                      <Input id="generalLeaveBalance" value="{MasterEmpModel>/0/GENERAL_LEAVE_BALANCE}" editable="false"/>
+                                         </VBox>
+                                       </FlexBox>
+
+
+                                    <Label text="Start Date*" required="true" design="Bold" />
+                                    <DatePicker id="leaveStartDatePicker"
+                                     placeholder="Select a Date"
+                                     value="{ path: 'LeaveInfoModel>/START_DATE', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"
+                                    change="onStartDateChange" minDate="{DateModel>/minDate}"/>
+
+                                    <Label text="End Date" design="Bold" />
+                                     <DatePicker id="leaveEndDatePicker"  valueFormat="yyyy-MM-dd"
+                                     displayFormat="yyyy-MM-dd" 
+                                     placeholder="Select a Date"
+                                     value="{ path: 'LeaveInfoModel>/END_DATE', type: 'sap.ui.model.type.Date', formatOptions: { source: { pattern: 'yyyy-MM-dd' }, pattern: 'yyyy-MM-dd' }}"
+                                    change="onEndDateChange" minDate="{DateModel>/minDate}"/>
+
+                                      <Label text="Requesting Days" design="Bold" />
+                                     <Input  id="requestingDays" value="{LeaveInfoModel>/NO_OF_LEAVES}" editable="false"/>
+
+                                    <Label text="Returning to Work On" design="Bold" />
+                                    <Text id="joiningDate" text="Joining Date: N/A" />
+
+                                    <Label text="Remarks" design="Bold" />
+                                    <TextArea id="remarksTextArea" value="{LeaveInfoModel>/LEAVE_NOTES}" placeholder="Enter remarks here"
+                                        rows="3"/>
+                                </form:content>
+                                 <HBox justifyContent="End" class="sapUiTinyMarginTop">
+                                   <Button text="Submit" press="onSubmitLeaveRequest" visible="false" />
+                               </HBox>
+                            </form:SimpleForm>
+                            </l:BlockLayoutCell>
+                        </l:BlockLayoutRow>
+                    </l:BlockLayout>
+                </l:VerticalLayout>
+            </f:content>
+            <f:footer>
+            <Bar design="Footer">
+                <contentRight>
+                    <Button text="Submit" type="Emphasized" press="OnSubmit" />
+                    <Button text="Cancel" type="Transparent" press="OnCancel" />
+                </contentRight>
+            </Bar>
+        </f:footer>
+
+        </f:DynamicPage>
+        
+    </l:DynamicSideContent>
+    
+</mvc:View>

@@ -1,0 +1,51 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog id="holidayCalendarDialog" title="Holiday Calendar"  contentWidth="60%"   
+          contentHeight="70%">
+    <VBox>
+        <!-- Your content here, like a calendar or other controls -->
+        
+    </VBox>
+    <Table
+                items="{HolidayCalendarModel>/}"
+                class="customAlternateRowColors"
+                inset="false"
+                width="100%">
+               
+                <columns >
+                    <Column>
+                        <Text text="Sr. No."/>
+                    </Column>
+                    <Column>
+                        <Text text="Date"/>
+                    </Column>
+                    <Column>
+                        <Text text="Day"/>
+                    </Column>
+                    <Column>
+                        <Text text="Holiday Description" />
+                    </Column>
+                  
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{HolidayCalendarModel>SR_NO}"/>
+                            <Text text="{HolidayCalendarModel>DATE}" />
+                            <Text text="{HolidayCalendarModel>DAY}" />
+                            <Text text="{HolidayCalendarModel>HOLIDAY_DESC}" />
+                            
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+   
+        
+        <Toolbar>
+            <ToolbarSpacer />
+            <Button text="Close" press="onDialogClose"/>
+        </Toolbar>
+   
+</Dialog>
+</core:FragmentDefinition>
